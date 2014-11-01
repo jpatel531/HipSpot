@@ -6,7 +6,9 @@ class Robut::Plugin::HipSpot
 	include Robut::Plugin
 	include PlaySpotify
 
-	URL = "http://localhost:9393/song"
+	# URL = "http://localhost:9393/song"
+
+	URL = "http://spotibot.ngrok.com/song"
 
 	desc "!play <query> plays the desired Spotify tune"
 
