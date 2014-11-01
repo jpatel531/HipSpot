@@ -7,12 +7,14 @@ require 'robut/storage/yaml_store'
 # require './plugins/giphy'
 require './plugins/google_search'
 
+require './plugins/hip_spot'
 # require 'robut/plugin/giphy'
 
 # Add the plugin classes to the Robut plugin list.
 # Plugins are handled in the order that they appear in this array.
 
 Robut::Plugin.plugins << Robut::Plugin::GoogleImages
+Robut::Plugin.plugins << Robut::Plugin::HipSpot
 
 # Configure the robut jabber connection and you're good to go!
 Robut::Connection.configure do |config|
