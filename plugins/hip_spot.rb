@@ -1,4 +1,4 @@
-require_relative '../hip_spot'
+require_relative '../lib/spotify_player'
 require 'httparty'
 
 class Robut::Plugin::HipSpot
