@@ -1,0 +1,37 @@
+# Require your plugins here
+
+# require 'robut/plugin/twss'
+# require 'robut/plugin/giphy'
+require 'robut/plugin/google_images'
+require 'robut/storage/yaml_store'
+require './plugins/giphy'
+
+# Add the plugin classes to the Robut plugin list.
+# Plugins are handled in the order that they appear in this array.
+
+Robut::Plugin.plugins << Robut::Plugin::Giphy
+
+# Configure the robut jabber connection and you're good to go!
+Robut::Connection.configure do |config|
+  # Note that the jid must end with /bot if you don't want robut to
+  # spam the channel, as described by the last bullet point on this
+  # page: https://www.hipchat.com/help/category/xmpp
+  config.jid = '193263_1376331@chat.hipchat.com/bot'
+  config.password = ENV["BOT_PASSWORD"]
+  config.nick = 'Jamie Patel'
+  config.room = '193263_testing@conf.hipchat.com'
+
+  # Custom @mention name
+  config.mention_name = 'spot'
+
+  # Ignore personal messages
+  # config.enable_private_messaging = false
+
+  # Some plugins require storage
+
+  Robut::Storage::YamlStore.file = ".robut"
+  config.store = Robut::Storage::YamlStore
+
+  # Add a logger if you want to debug the connection
+  config.logger = Logger.new(STDOUT)
+end

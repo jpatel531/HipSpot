@@ -7,5 +7,13 @@ def track name
 end
 
 def play song
-`osascript -e 'tell application "Spotify" to play track "#{song}"'`
+	`osascript -e 'tell application "Spotify" to play track "#{song}"'`
+end
+
+def pause
+	`osascript -e 'tell application "Spotify" to pause'`
+end
+
+def resume
+	`osascript -e 'tell application "Spotify" to play'`
 end
