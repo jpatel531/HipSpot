@@ -4,7 +4,8 @@ module PlaySpotify
 
 	def track name
 		client = Spotify::Client.new
-		client.search("track", name).first[1]["items"].first["uri"]
+		@item = client.search("track", name).first[1]["items"].first
+		@item["uri"]
 	end
 
 	def play song
@@ -17,6 +18,13 @@ module PlaySpotify
 
 	def resume
 		`osascript -e 'tell application "Spotify" to play'`
+	end
+
+	def playing_message
+		name = @item["name"]
+		artist = @item["artists"].first["name"]
+		album = @item["album"]["name"]
+		"Playing #{name} by #{artist} from the album #{album}"
 	end
 
 end

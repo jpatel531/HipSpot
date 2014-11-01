@@ -13,8 +13,8 @@ class Robut::Plugin::HipSpot
 	desc "!play <query> plays the desired Spotify tune"
 
   	match /^!play (.*)/ do |query|
-  		HTTParty.post(URL, body: {song: query}.to_json, headers: { 'Content-Type' => 'application/json' })
-  		reply query
+  		message = HTTParty.post(URL, body: {song: query}.to_json, headers: { 'Content-Type' => 'application/json' })
+  		reply JSON.parse(message)["message"]
   	end
 
 

@@ -7,4 +7,5 @@ include PlaySpotify
 post '/song' do
 	input = JSON.parse(request.body.read)["song"]
 	play track input
+	{message: playing_message}.to_json
 end
