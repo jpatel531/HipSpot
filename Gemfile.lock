@@ -4,7 +4,11 @@ GEM
     excon (0.40.0)
     google-search (1.0.3)
       json
+    httparty (0.13.1)
+      json (~> 1.8)
+      multi_xml (>= 0.5.2)
     json (1.8.1)
+    multi_xml (0.5.5)
     rack (1.5.2)
     rack-protection (1.5.3)
       rack
@@ -25,5 +29,7 @@ PLATFORMS
 
 DEPENDENCIES
   google-search
+  httparty
   robut
+  sinatra
   spotify-client

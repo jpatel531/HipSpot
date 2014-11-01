@@ -1,34 +1,18 @@
 require_relative '../hip_spot'
-
-# play track "come fly with me sinatra"
+require 'httparty'
 
 class Robut::Plugin::HipSpot
 
 	include Robut::Plugin
 	include PlaySpotify
 
+	URL = "http://localhost:9393/song"
+
 	desc "!play <query> plays the desired Spotify tune"
 
   	match /^!play (.*)/ do |query|
-
-  		# raise query.inspect
-
-  		play track query
-
+  		HTTParty.post(URL, body: {song: query}.to_json, headers: { 'Content-Type' => 'application/json' })
   		reply query
-
-	    # image = Google::Search::Image.new(:query => query, :safe => :active).first
-
-	    # if image
-	    #   reply image.uri
-	    # else
-	    #   reply "Couldn't find an image"
-	    # end
-
-	    # play track query
-
-	    # reply "Playing #{query}"
-
   	end
 
 
