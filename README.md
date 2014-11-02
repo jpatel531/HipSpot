@@ -16,6 +16,8 @@ Clone this repo.
 
 ###Setting Up The Bot
 
+Firstly, create the Robot's account and invite him/her to your organisation.
+
 In `config.yml`, set up the variables the robot needs to run:
 
 * `server_url`: The URL the Robot is posting song requests to.
