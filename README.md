@@ -27,7 +27,7 @@ In `config.yml`, set up the variables the robot needs to run:
 * `room`: The HipChat rooms the Robot appears in.
 * `mention_name`: The short name referring to the Robot. E.g. @bot
 
-When that's done, type `robut` to start the Robot. You should see it appear in Hipchat.
+When that's done, type `robut` to start the Robot. You should see it appear in HipChat.
 
 ###Start The Server
 
