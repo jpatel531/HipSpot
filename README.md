@@ -33,7 +33,21 @@ When that's done, type `robut` to start the Robot. You should see it appear in H
 
 Alternatively you can use the external IP to receive requests from within a local network without deployment. When the Bot sends requests, the server will play the appropriate Spotify song on the computer it's hosted on.
 
-Ta Da!
+###Bust A Move
+
+In a HipChat room where the Bot is present, type:
+
+    !play this charming man
+
+And you should see this:
+
+![This Charming Man](https://raw.githubusercontent.com/jpatel531/HipSpot/master/screenshot/smiths.jpg)
+
+And hear this:
+
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=cJRP3LRcUFg
+" target="_blank"><img src="http://img.youtube.com/vi/cJRP3LRcUFg/0.jpg" 
+alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
 
 
 
