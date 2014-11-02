@@ -1,0 +1,7 @@
+---
+server_url: http://spotibot.ngrok.com/song
+jid: 193263_1376488@chat.hipchat.com/bot
+password: <%= ENV['BOT_PASSWORD'] %>
+nick: Spoti Bot
+room: 193263_testing@conf.hipchat.com
+mention_name: spot

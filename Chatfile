@@ -5,8 +5,15 @@ require 'robut/storage/yaml_store'
 
 require './plugins/hip_spot'
 
+require 'yaml'
+require 'erb'
+
 # Add the plugin classes to the Robut plugin list.
 # Plugins are handled in the order that they appear in this array.
+
+user_vars = YAML.load(ERB.new(File.read('./config.yml')).result)
+
+
 
 Robut::Plugin.plugins << Robut::Plugin::HipSpot
 
@@ -15,13 +22,13 @@ Robut::Connection.configure do |config|
   # Note that the jid must end with /bot if you don't want robut to
   # spam the channel, as described by the last bullet point on this
   # page: https://www.hipchat.com/help/category/xmpp
-  config.jid = '193263_1376488@chat.hipchat.com/bot'
-  config.password = ENV["BOT_PASSWORD"]
-  config.nick = 'Spoti Bot'
-  config.room = '193263_testing@conf.hipchat.com'
+  config.jid = user_vars["jid"]
+  config.password = user_vars["password"]
+  config.nick = user_vars["nick"]
+  config.room = user_vars["room"]
 
   # Custom @mention name
-  config.mention_name = 'spot'
+  config.mention_name = user_vars["mention_name"]
 
   # Ignore personal messages
   # config.enable_private_messaging = false

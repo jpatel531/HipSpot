@@ -1,14 +1,13 @@
 require_relative '../lib/spotify_player'
 require 'httparty'
+require 'yaml'
 
 class Robut::Plugin::HipSpot
 
 	include Robut::Plugin
 	include PlaySpotify
 
-	# URL = "http://localhost:9393/song"
-
-	URL = "http://spotibot.ngrok.com/song"
+	URL = YAML.load_file('config.yml')["server_url"]
 
 	desc "!play <query> plays the desired Spotify tune"
 
