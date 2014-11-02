@@ -14,7 +14,7 @@ Clone this repo.
 
     $ git clone https://github.com/jpatel531/HipSpot.git
 
-###Setting Up The Bot
+###Set Up The Bot
 
 Firstly, create the Robot's account and invite him/her to your organisation.
 
