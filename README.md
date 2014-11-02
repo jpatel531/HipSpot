@@ -32,8 +32,8 @@ When that's done, type `robut` to start the Robot. You should see it appear in H
 ###Start The Server
 
     $ cd server
-    shotgun
-    ngrok -subdomain=<your_app_name> 9393
+    $ shotgun
+    $ ngrok -subdomain=<your_app_name> 9393
 
 Alternatively you can use the external IP to receive requests from within a local network without deployment. When the Bot sends requests, the server will play the appropriate Spotify song on the computer it's hosted on.
 
