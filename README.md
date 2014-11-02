@@ -6,7 +6,7 @@ A HipChat plugin that allows you play tunes on Spotify.
 
 ##What It Does
 
-Let's say you're in an office, and there's one computer running Spotify. Given that computer has Spotify open, and both `server/server.rb` and the `robut` binary are running, anyone on the company's HipChat can play songs on the central computer.
+Let's say you're in an office, and there's one computer running Spotify. Given that computer has Spotify open, and both `server/server.rb` and the `robut` binary are running, anyone on the company's HipChat can play songs on the central computer merely by typing `!play song_name` in a HipChat room.
 
 ##How To Run It
 
