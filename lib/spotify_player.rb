@@ -21,10 +21,8 @@ module PlaySpotify
 	end
 
 	def playing_message
-		name = @item["name"]
-		artist = @item["artists"].first["name"]
-		album = @item["album"]["name"]
-		"Playing #{name} by #{artist} from the album #{album}"
+		name, artist, album = @item["name"], @item["artists"].first["name"], @item["album"]["name"]
+		"Playing '#{name}' by #{artist} from the album '#{album}'"
 	end
 
 end
