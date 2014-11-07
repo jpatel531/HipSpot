@@ -20,14 +20,14 @@ class Robut::Plugin::HipSpot
 	  		create_playlist
 	  		add_to_playlist query
 	  		play @playlist["uri"]
-	  		reply "Playing #{message}"
+	  		reply "Thanks, #{@sender_name}. Playing #{message}"
   		else
-  			store['current_playlist'] ? (@playlist = store['current_playlist']) : create_playlist
+  			store['current_playlist'] ? (@playlist = get_playlist_from store['current_playlist']) : create_playlist
   			add_to_playlist query
-  			reply "Queuing #{message}"
+  			reply "Thanks, #{@sender_name}. Queuing #{message}"
   		end
 
-  		store['current_playlist'] = @playlist
+  		store['current_playlist'] = @playlist["id"]
 
 
   	end

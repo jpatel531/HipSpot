@@ -6,8 +6,7 @@ module PlaySpotify
 
 	def client 
 		@client ||= Spotify::Client.new access_token: 'BQBlcsRI04FRsUEYBFyYvmBufVPpQ8CTOPhG5753_BjTJKNdsVOGlIDBoSBlnvCnH1IdQs9rr5we7k4Z3quUgO2C3FpDyNCX20eKQSJ6zlZARzysUHva_6gZ7jTVcKarXHVEg235RmEw21j0U87Eh-qmU9N-vysCngPSLIefJ5Y'
-		refresh_token if !@client.me
-		@client
+		@client.me ? @client : refresh_token
 	end
 
 	def refresh_token
@@ -21,6 +20,10 @@ module PlaySpotify
 		@item["uri"]
 	end
 
+	def get_playlist_from id
+		client.user_playlist('jpatel1', id)
+	end
+
 	def create_playlist
 		@playlist = client.create_user_playlist 'jpatel1', SecureRandom.hex
 	end
@@ -28,7 +31,6 @@ module PlaySpotify
 	def add_to_playlist name
 		playlist_id = @playlist["id"]
 		client.add_user_tracks_to_playlist 'jpatel1', playlist_id, [track(name)]
-		@playlist = client.user_playlist('jpatel1', playlist_id)
 	end
 
 	def play song
