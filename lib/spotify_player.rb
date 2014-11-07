@@ -1,10 +1,19 @@
 require 'spotify-client'
 require 'securerandom'
+require 'httparty'
 
 module PlaySpotify
 
 	def client 
-		@client ||= Spotify::Client.new access_token: 'BQCbrvp9QCtpalIG31pLdCpsWKlwsLq_5cVU4JJdzVM16vqKzI45UIQCs9HNKT83yoheK9XsS3IVlYy-oA9Laf4v4j5HLnin7JHv7amfeWJuv5JfR9bemGhkMZmg6jku5MHaC9xH8EzMXvm_ljaQyG4stThodqt-v3LLExomRAw'
+		@client ||= Spotify::Client.new access_token: 'BQBlcsRI04FRsUEYBFyYvmBufVPpQ8CTOPhG5753_BjTJKNdsVOGlIDBoSBlnvCnH1IdQs9rr5we7k4Z3quUgO2C3FpDyNCX20eKQSJ6zlZARzysUHva_6gZ7jTVcKarXHVEg235RmEw21j0U87Eh-qmU9N-vysCngPSLIefJ5Y'
+		refresh_token if !@client.me
+		@client
+	end
+
+	def refresh_token
+		response = `curl -X POST https://accounts.spotify.com/api/token -d grant_type=refresh_token -d refresh_token=#{ENV["SPOTIFY_REFRESH_TOKEN"]} -H "Authorization: Basic #{ENV["SPOTIFY_HASH"]}"`
+		access_token = JSON.parse(response)["access_token"]
+		@client = Spotify::Client.new access_token: access_token
 	end
 
 	def track name
@@ -17,7 +26,9 @@ module PlaySpotify
 	end
 
 	def add_to_playlist name
-		client.add_user_tracks_to_playlist 'jpatel1', @playlist["id"], [track(name)]
+		playlist_id = @playlist["id"]
+		client.add_user_tracks_to_playlist 'jpatel1', playlist_id, [track(name)]
+		@playlist = client.user_playlist('jpatel1', playlist_id)
 	end
 
 	def play song
@@ -32,9 +43,9 @@ module PlaySpotify
 		`osascript -e 'tell application "Spotify" to play'`
 	end
 
-	def playing_message
+	def message
 		name, artist, album = @item["name"], @item["artists"].first["name"], @item["album"]["name"]
-		"Playing '#{name}' by #{artist} from the album '#{album}'"
+		"'#{name}' by #{artist} from the album '#{album}'"
 	end
 
 end

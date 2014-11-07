@@ -13,23 +13,22 @@ class Robut::Plugin::HipSpot
 	desc "!play <query> plays the desired Spotify tune"
 
   	match /^!play (.*)/ do |query|
-  		# message = HTTParty.post(URL, body: {song: query}.to_json, headers: { 'Content-Type' => 'application/json' })
-  		# reply JSON.parse(message)["message"]
-  		store['track'] = query
-
   		player_state = `osascript -e 'tell application "Spotify" to player state'`.chomp
+  		
+
   		if player_state != 'playing'
-	  		# play track query
-	  		# reply playing_message
 	  		create_playlist
 	  		add_to_playlist query
 	  		play @playlist["uri"]
-	  		store['current_playlist'] = @playlist
+	  		reply "Playing #{message}"
   		else
-  			create_playlist unless store['current_playlist']
   			store['current_playlist'] ? (@playlist = store['current_playlist']) : create_playlist
   			add_to_playlist query
+  			reply "Queuing #{message}"
   		end
+
+  		store['current_playlist'] = @playlist
+
 
   	end
 
