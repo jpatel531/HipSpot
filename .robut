@@ -1,0 +1,33 @@
+---
+track: gorillaz
+current_playlist:
+  collaborative: false
+  description: 
+  external_urls:
+    spotify: http://open.spotify.com/user/jpatel1/playlist/2ZNOf0ukfURbFYusdqrI6Q
+  followers:
+    href: 
+    total: 0
+  href: https://api.spotify.com/v1/users/jpatel1/playlists/2ZNOf0ukfURbFYusdqrI6Q
+  id: 2ZNOf0ukfURbFYusdqrI6Q
+  images: []
+  name: 656067a7b1096394df12e7e39657cc70
+  owner:
+    external_urls:
+      spotify: http://open.spotify.com/user/jpatel1
+    href: https://api.spotify.com/v1/users/jpatel1
+    id: jpatel1
+    type: user
+    uri: spotify:user:jpatel1
+  public: true
+  snapshot_id: d9yJqOozabTkxtz0npnLbatv1hK1DSHyB3aHrs9+zms4IlKPaTUMWaXtuPgpnme3
+  tracks:
+    href: https://api.spotify.com/v1/users/jpatel1/playlists/2ZNOf0ukfURbFYusdqrI6Q/tracks
+    items: []
+    limit: 100
+    next: 
+    offset: 0
+    previous: 
+    total: 0
+  type: playlist
+  uri: spotify:user:jpatel1:playlist:2ZNOf0ukfURbFYusdqrI6Q
