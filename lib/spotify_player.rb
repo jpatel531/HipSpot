@@ -13,6 +13,10 @@ module PlaySpotify
 		store['current_playlist'] = @playlist['id']
 	end
 
+	def get_playlist_from_store
+    	@playlist = get_playlist_from store['current_playlist']
+	end
+
 	def refresh_token
 		response = `curl -X POST https://accounts.spotify.com/api/token -d grant_type=refresh_token -d refresh_token=#{ENV["SPOTIFY_REFRESH_TOKEN"]} -H "Authorization: Basic #{ENV["SPOTIFY_HASH"]}"`
 		access_token = JSON.parse(response)["access_token"]

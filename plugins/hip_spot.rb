@@ -14,12 +14,13 @@ class Robut::Plugin::HipSpot
 
   match /!new/ do
     create_playlist and save_playlist
+    reply "Creating new playlist"
   end
 
 	match /^!play (.*)/ do |query|
 		player_state = `osascript -e 'tell application "Spotify" to player state'`.chomp
 		
-    @playlist = get_playlist_from store['current_playlist']
+    get_playlist_from_store
 
     return reply "No playlist found. Type !new to create a new playlist" unless @playlist
 
