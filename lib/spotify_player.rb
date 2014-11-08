@@ -9,6 +9,10 @@ module PlaySpotify
 		@client.me ? @client : refresh_token
 	end
 
+	def save_playlist
+		store['current_playlist'] = @playlist['id']
+	end
+
 	def refresh_token
 		response = `curl -X POST https://accounts.spotify.com/api/token -d grant_type=refresh_token -d refresh_token=#{ENV["SPOTIFY_REFRESH_TOKEN"]} -H "Authorization: Basic #{ENV["SPOTIFY_HASH"]}"`
 		access_token = JSON.parse(response)["access_token"]
@@ -25,7 +29,7 @@ module PlaySpotify
 	end
 
 	def create_playlist
-		@playlist = client.create_user_playlist 'jpatel1', SecureRandom.hex
+		@playlist = client.create_user_playlist 'jpatel1', SecureRandom.hex, true
 	end
 
 	def add_to_playlist name

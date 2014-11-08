@@ -12,32 +12,34 @@ class Robut::Plugin::HipSpot
 
 	desc "!play <query> plays the desired Spotify tune"
 
-  	match /^!play (.*)/ do |query|
-  		player_state = `osascript -e 'tell application "Spotify" to player state'`.chomp
-  		
+  match /!new/ do
+    create_playlist and save_playlist
+  end
 
-  		if player_state != 'playing'
-	  		create_playlist
-	  		add_to_playlist query
-	  		play @playlist["uri"]
-	  		reply "Thanks, #{@sender_name}. Playing #{message}"
-  		else
-  			store['current_playlist'] ? (@playlist = get_playlist_from store['current_playlist']) : create_playlist
-  			add_to_playlist query
-  			reply "Thanks, #{@sender_name}. Queuing #{message}"
-  		end
+	match /^!play (.*)/ do |query|
+		player_state = `osascript -e 'tell application "Spotify" to player state'`.chomp
+		
+    @playlist = get_playlist_from store['current_playlist']
 
-  		store['current_playlist'] = @playlist["id"]
+    return reply "No playlist found. Type !new to create a new playlist" unless @playlist
 
+		if player_state != 'playing'
+  		add_to_playlist query
+  		play @playlist["uri"]
+  		reply "Thanks, #{private_sender}. Playing #{message}"
+		else
+			add_to_playlist query
+			reply "Thanks, #{private_sender}. Queuing #{message}"
+		end
 
-  	end
+	end
 
-  	match /!pause/ do
-  		pause
-  	end
+	match /!pause/ do
+		pause
+	end
 
-  	match /!resume/ do
-  		resume
-  	end
+	match /!resume/ do
+		resume
+	end
 
 end
