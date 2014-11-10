@@ -1,14 +1,10 @@
 require_relative '../lib/spotify_player'
 require 'httparty'
-require 'yaml'
-require 'rufus-scheduler'
 
 class Robut::Plugin::HipSpot
 
 	include Robut::Plugin
 	include PlaySpotify
-
-	URL = YAML.load_file('config.yml')["server_url"]
 
 	desc "!play <query> plays the desired Spotify tune"
 
@@ -18,6 +14,7 @@ class Robut::Plugin::HipSpot
   end
 
 	match /^!play (.*)/ do |query|
+
 		player_state = `osascript -e 'tell application "Spotify" to player state'`.chomp
 		
     get_playlist_from_store
@@ -27,10 +24,10 @@ class Robut::Plugin::HipSpot
 		if player_state != 'playing'
   		add_to_playlist query
   		play @playlist["uri"]
-  		reply "Thanks, #{private_sender}. Playing #{message}"
+  		reply "Thanks, #{sender}. Playing #{message}"
 		else
 			add_to_playlist query
-			reply "Thanks, #{private_sender}. Queuing #{message}"
+			reply "Thanks, #{sender}. Queuing #{message}"
 		end
 
 	end
@@ -40,6 +37,7 @@ class Robut::Plugin::HipSpot
 	end
 
 	match /!resume/ do
+    raise connection.roster.items.inspect
 		resume
 	end
 

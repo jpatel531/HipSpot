@@ -1,12 +1,16 @@
 require 'spotify-client'
 require 'securerandom'
 require 'httparty'
+require 'yaml'
+require 'erb'
 
 module PlaySpotify
 
+	CONFIG = YAML.load(ERB.new(File.read('./config.yml')).result)
+	SPOTIFY_USER = CONFIG["spotify_id"]
+
 	def client 
-		@client ||= Spotify::Client.new access_token: 'BQBlcsRI04FRsUEYBFyYvmBufVPpQ8CTOPhG5753_BjTJKNdsVOGlIDBoSBlnvCnH1IdQs9rr5we7k4Z3quUgO2C3FpDyNCX20eKQSJ6zlZARzysUHva_6gZ7jTVcKarXHVEg235RmEw21j0U87Eh-qmU9N-vysCngPSLIefJ5Y'
-		@client.me ? @client : refresh_token
+		@client ||= authenticated_client
 	end
 
 	def save_playlist
@@ -17,8 +21,8 @@ module PlaySpotify
     	@playlist = get_playlist_from store['current_playlist']
 	end
 
-	def refresh_token
-		response = `curl -X POST https://accounts.spotify.com/api/token -d grant_type=refresh_token -d refresh_token=#{ENV["SPOTIFY_REFRESH_TOKEN"]} -H "Authorization: Basic #{ENV["SPOTIFY_HASH"]}"`
+	def authenticated_client
+		response = `curl -X POST https://accounts.spotify.com/api/token -d grant_type=refresh_token -d refresh_token=#{CONFIG["spotify_refresh_token"]} -H "Authorization: Basic #{CONFIG["spotify_auth_hash"]}"`
 		access_token = JSON.parse(response)["access_token"]
 		@client = Spotify::Client.new access_token: access_token
 	end
@@ -29,16 +33,16 @@ module PlaySpotify
 	end
 
 	def get_playlist_from id
-		client.user_playlist('jpatel1', id)
+		client.user_playlist SPOTIFY_USER, id
 	end
 
 	def create_playlist
-		@playlist = client.create_user_playlist 'jpatel1', SecureRandom.hex, true
+		@playlist = client.create_user_playlist SPOTIFY_USER, SecureRandom.hex, true
 	end
 
 	def add_to_playlist name
 		playlist_id = @playlist["id"]
-		client.add_user_tracks_to_playlist 'jpatel1', playlist_id, [track(name)]
+		client.add_user_tracks_to_playlist SPOTIFY_USER, playlist_id, [track(name)]
 	end
 
 	def play song
