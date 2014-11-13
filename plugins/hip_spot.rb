@@ -8,12 +8,15 @@ class Robut::Plugin::HipSpot
 
 	desc "!play <query> plays the desired Spotify tune"
 
-  match /!new/ do
-    create_playlist and save_playlist
-    reply "Creating new playlist"
-  end
+
+	  match /!new/ do
+	    create_playlist and save_playlist
+	    reply "Creating new playlist"
+	  end
 
 	match /^!play (.*)/ do |query|
+
+		# play track query
 
 		player_state = `osascript -e 'tell application "Spotify" to player state'`.chomp
 		
@@ -37,8 +40,8 @@ class Robut::Plugin::HipSpot
 	end
 
 	match /!resume/ do
-    raise connection.roster.items.inspect
-		resume
+    # raise connection.roster.items.inspect
+	# 	resume
 	end
 
 end

@@ -1,4 +1,4 @@
-# Require your plugins here
+ # Require your plugins here
 
 require 'robut/storage/yaml_store'
 
