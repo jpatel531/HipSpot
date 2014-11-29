@@ -6,7 +6,7 @@ require 'erb'
 
 module PlaySpotify
 
-	CONFIG = YAML.load(ERB.new(File.read('./config.yml')).result)
+	CONFIG = YAML.load(ERB.new(File.read('../config.yml')).result)
 	SPOTIFY_USER = CONFIG["spotify_id"]
 
 	def client 

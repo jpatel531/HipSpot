@@ -18,20 +18,20 @@ class Robut::Plugin::HipSpot
 
 		# play track query
 
-		player_state = `osascript -e 'tell application "Spotify" to player state'`.chomp
+		# player_state = `osascript -e 'tell application "Spotify" to player state'`.chomp
 		
-    get_playlist_from_store
+  #   get_playlist_from_store
 
-    return reply "No playlist found. Type !new to create a new playlist" unless @playlist
+  #   return reply "No playlist found. Type !new to create a new playlist" unless @playlist
 
-		if player_state != 'playing'
-  		add_to_playlist query
-  		play @playlist["uri"]
-  		reply "Thanks, #{sender}. Playing #{message}"
-		else
-			add_to_playlist query
-			reply "Thanks, #{sender}. Queuing #{message}"
-		end
+		# if player_state != 'playing'
+  # 		add_to_playlist query
+  # 		play @playlist["uri"]
+  # 		reply "Thanks, #{sender}. Playing #{message}"
+		# else
+		# 	add_to_playlist query
+		# 	reply "Thanks, #{sender}. Queuing #{message}"
+		# end
 
 	end
 
