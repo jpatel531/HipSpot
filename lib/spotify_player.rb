@@ -6,10 +6,10 @@ require 'erb'
 
 module PlaySpotify
 
-	CONFIG = YAML.load(ERB.new(File.read('../config.yml')).result)
+	CONFIG = YAML.load(ERB.new(File.read('config.yml')).result)
 	SPOTIFY_USER = CONFIG["spotify_id"]
 
-	def client 
+	def client
 		@client ||= authenticated_client
 	end
 
@@ -18,7 +18,7 @@ module PlaySpotify
 	end
 
 	def get_playlist_from_store
-    	@playlist = get_playlist_from store['current_playlist']
+		@playlist = get_playlist_from store['current_playlist']
 	end
 
 	def authenticated_client
@@ -34,6 +34,34 @@ module PlaySpotify
 
 	def get_playlist_from id
 		client.user_playlist SPOTIFY_USER, id
+	end
+
+	def last_song_on_playlist
+		get_playlist_from(@playlist["id"])["tracks"]["items"].last["track"]["uri"]
+	end
+
+	def is_last_song? song
+		track(song) === last_song_on_playlist
+	end
+
+	def resume_playlist song
+		# items = get_playlist_from(@playlist["id"])["tracks"]["items"]
+		# items.length
+
+		items = get_playlist_from(@playlist["id"])["tracks"]["items"].map {|item| item['track']['uri']}
+
+		song_index = items.index(track(song))
+
+		play @playlist["uri"]
+		pause
+
+		song_index.times { skip }
+
+		# play @playlist["uri"]
+	end
+
+	def skip
+		`osascript -e 'tell application "Spotify" to next track'`
 	end
 
 	def create_playlist

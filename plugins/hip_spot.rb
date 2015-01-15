@@ -9,29 +9,40 @@ class Robut::Plugin::HipSpot
 	desc "!play <query> plays the desired Spotify tune"
 
 
-	  match /!new/ do
-	    create_playlist and save_playlist
-	    reply "Creating new playlist"
-	  end
+	match /!new/ do
+		create_playlist and save_playlist
+		reply "Creating new playlist"
+		store['beyond_last_song'] = false
+	end
 
 	match /^!play (.*)/ do |query|
+		player_state = `osascript -e 'tell application "Spotify" to player state'`.chomp
 
-		# play track query
+		get_playlist_from_store
 
-		# player_state = `osascript -e 'tell application "Spotify" to player state'`.chomp
-		
-  #   get_playlist_from_store
+		return reply "No playlist found. Type !new to create a new playlist" unless @playlist
 
-  #   return reply "No playlist found. Type !new to create a new playlist" unless @playlist
+		if player_state != 'playing'
+			add_to_playlist query
+			if store['beyond_last_song'] === 'true'
+				until `osascript -e 'tell application "Spotify" to id of current track'`.chomp == track(query)
+					skip
+				end
+				resume
+			else
+				play @playlist["uri"]
+			end
+			reply "Thanks. Playing #{message}"
+		else
+			add_to_playlist query
+			reply "Thanks. Queuing #{message}"
+		end
 
-		# if player_state != 'playing'
-  # 		add_to_playlist query
-  # 		play @playlist["uri"]
-  # 		reply "Thanks, #{sender}. Playing #{message}"
-		# else
-		# 	add_to_playlist query
-		# 	reply "Thanks, #{sender}. Queuing #{message}"
-		# end
+		if is_last_song?(query)
+			store['beyond_last_song'] = 'true'
+		else
+			store['beynd_last_song'] = 'false'
+		end
 
 	end
 
@@ -40,8 +51,7 @@ class Robut::Plugin::HipSpot
 	end
 
 	match /!resume/ do
-    # raise connection.roster.items.inspect
-	# 	resume
+		resume
 	end
 
 end
