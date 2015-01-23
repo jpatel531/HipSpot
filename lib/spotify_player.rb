@@ -46,6 +46,11 @@ module PlaySpotify
 		get_playlist_from(@playlist["id"])["tracks"]["items"].last["track"]["uri"]
 	end
 
+	def remove_song index = 0
+		to_remove = get_playlist_from(@playlist["id"])["tracks"]["items"][0 - index]["track"]["uri"]
+		client.remove_user_tracks_from_playlist SPOTIFY_USER, @playlist["id"], [{uri: to_remove}]
+	end
+
 	def is_last_song? song
 		track(song) === last_song_on_playlist
 	end

@@ -1,5 +1,6 @@
 require_relative '../lib/spotify_player'
 require 'httparty'
+require 'active_support/core_ext'
 
 class Robut::Plugin::HipSpot
 
@@ -53,6 +54,18 @@ class Robut::Plugin::HipSpot
 	desc "!resume(s) the song"
 	match /!resume/ do
 		resume
+	end
+
+	desc "!remove(s) an unwanted song"
+	match /^!remove(.*)/ do |index|
+		get_playlist_from_store unless @playlist
+		if index.blank?
+			unwanted = 1
+		else
+			unwanted = index.match(/^\^(.*)/)[1].to_i
+		end
+		remove_song(unwanted)
+		reply "Removed the #{unwanted.ordinalize} to last song in the queue." 
 	end
 
 end
