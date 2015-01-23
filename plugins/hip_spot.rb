@@ -6,15 +6,14 @@ class Robut::Plugin::HipSpot
 	include Robut::Plugin
 	include PlaySpotify
 
-	desc "!play <query> plays the desired Spotify tune"
-
-
+	desc "!new creates a new playlist"
 	match /!new/ do
 		create_playlist and save_playlist
 		reply "Creating new playlist"
 		store['beyond_last_song'] = false
 	end
 
+	desc "!play <query> plays the desired Spotify tune. If a tune is already playing, it will queue in the playlist. Make sure you have started a !new playlist."
 	match /^!play (.*)/ do |query|
 		player_state = `osascript -e 'tell application "Spotify" to player state'`.chomp
 
@@ -25,7 +24,7 @@ class Robut::Plugin::HipSpot
 		if player_state != 'playing'
 			add_to_playlist query
 			if store['beyond_last_song'] === 'true'
-				until `osascript -e 'tell application "Spotify" to id of current track'`.chomp == track(query)
+				until is_current_song? query
 					skip
 				end
 				resume
@@ -41,15 +40,17 @@ class Robut::Plugin::HipSpot
 		if is_last_song?(query)
 			store['beyond_last_song'] = 'true'
 		else
-			store['beynd_last_song'] = 'false'
+			store['beyond_last_song'] = 'false'
 		end
 
 	end
 
+	desc "!pause(s) the current tune"
 	match /!pause/ do
 		pause
 	end
 
+	desc "!resume(s) the song"
 	match /!resume/ do
 		resume
 	end

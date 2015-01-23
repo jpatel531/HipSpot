@@ -22,8 +22,14 @@ module PlaySpotify
 	end
 
 	def authenticated_client
-		response = `curl -X POST https://accounts.spotify.com/api/token -d grant_type=refresh_token -d refresh_token=#{CONFIG["spotify_refresh_token"]} -H "Authorization: Basic #{CONFIG["spotify_auth_hash"]}"`
-		access_token = JSON.parse(response)["access_token"]
+		response = HTTParty.post("https://accounts.spotify.com/api/token",{
+			headers: {'Authorization' => "Basic #{CONFIG["spotify_auth_hash"]}"},
+			body: {
+				grant_type: 'refresh_token',
+				refresh_token: CONFIG["spotify_refresh_token"]
+			}
+			})
+		access_token = JSON.parse(response.body)["access_token"]
 		@client = Spotify::Client.new access_token: access_token
 	end
 
@@ -44,20 +50,8 @@ module PlaySpotify
 		track(song) === last_song_on_playlist
 	end
 
-	def resume_playlist song
-		# items = get_playlist_from(@playlist["id"])["tracks"]["items"]
-		# items.length
-
-		items = get_playlist_from(@playlist["id"])["tracks"]["items"].map {|item| item['track']['uri']}
-
-		song_index = items.index(track(song))
-
-		play @playlist["uri"]
-		pause
-
-		song_index.times { skip }
-
-		# play @playlist["uri"]
+	def is_current_song? song
+		`osascript -e 'tell application "Spotify" to id of current track'`.chomp == track(song)
 	end
 
 	def skip
