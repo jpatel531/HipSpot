@@ -68,4 +68,19 @@ class Robut::Plugin::HipSpot
 		reply "Removed the #{unwanted.ordinalize} to last song in the queue." 
 	end
 
+	match /^fucking turn it down!|turn it down/ do |index|
+		`osascript -e "set volume output volume (output volume of (get volume settings) - 10) --100%"`
+		reply "Turning it down..."
+	end
+
+	match /^crank this shit up!|turn it up/ do |index|
+		`osascript -e "set volume output volume (output volume of (get volume settings) + 10) --100%"`
+		reply "Let's get our phunk on!"
+	end
+
+	match /!volume?/ do
+		volume = `osascript -e "output volume of (get volume settings)"`.chomp
+		reply "The volume is at #{volume}%"
+	end
+
 end
