@@ -7,6 +7,7 @@ class Robut::Plugin::HipSpot
 	include Robut::Plugin
 
 	desc "!new creates a new playlist"
+
 	match /!new/ do
 		Playlist.create(store)
 		reply "Creating new playlist"
@@ -14,6 +15,7 @@ class Robut::Plugin::HipSpot
 	end
 
 	desc "!play <query> plays the desired Spotify tune. If a tune is already playing, it will queue in the playlist. Make sure you have started a !new playlist."
+	
 	match /^!play (.*)/ do |query|
 		player_state = SpotifyController.player_state
 
@@ -47,16 +49,19 @@ class Robut::Plugin::HipSpot
 	end
 
 	desc "!pause(s) the current tune"
+	
 	match /!pause/ do
 		SpotifyController.pause
 	end
 
 	desc "!resume(s) the song"
+	
 	match /!resume/ do
 		SpotifyController.resume
 	end
 
 	desc "!remove(s) an unwanted song"
+	
 	match /^!remove(.*)/ do |index|
 		playlist = Playlist.from_store(store)
 		if index.blank?
@@ -69,18 +74,17 @@ class Robut::Plugin::HipSpot
 	end
 
 	match /^fucking turn it down!|turn it down/ do |index|
-		`osascript -e "set volume output volume (output volume of (get volume settings) - 10) --100%"`
+		SpotifyController.change_volume(-10)
 		reply "Turning it down..."
 	end
 
 	match /^crank this shit up!|turn it up/ do |index|
-		`osascript -e "set volume output volume (output volume of (get volume settings) + 10) --100%"`
+		SpotifyController.change_volume(10)
 		reply "Let's get our phunk on!"
 	end
 
 	match /!volume?/ do
-		volume = `osascript -e "output volume of (get volume settings)"`.chomp
-		reply "The volume is at #{volume}%"
+		reply "The volume is at #{SpotifyController.volume}%"
 	end
 
 end

@@ -31,5 +31,15 @@ class SpotifyController
 			`osascript -e 'tell application "Spotify" to player state'`.chomp
 		end
 
+		def change_volume(difference)
+			positive_negative = (difference >= 0) ? '+' : '-'
+			difference = difference.abs
+			`osascript -e "set volume output volume (output volume of (get volume settings) #{positive_negative} #{difference}) --100%"`
+		end
+
+		def volume
+				`osascript -e "output volume of (get volume settings)"`.chomp
+		end
+
 	end
 end
