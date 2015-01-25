@@ -42,7 +42,7 @@ class Playlist
 	end
 
 	def refresh
-		data = self.class.data_from_id(id)
+		@data = self.class.data_from_id(id)
 	end
 
 	def last_song
