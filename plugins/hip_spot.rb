@@ -22,30 +22,40 @@ class Robut::Plugin::HipSpot
 		return reply "No playlist found. Type !new to create a new playlist" unless store['current_playlist']
 
 		playlist = Playlist.from_store(store)
-		track = Track.from_name(query)
 
-		if player_state != 'playing'
-			playlist.add(track)
-			if store['beyond_last_song'] === 'true'
-				until SpotifyController.is_current_song?(track)
-					SpotifyController.skip
+		begin
+			track = Track.from_name(query)
+
+			if player_state != 'playing'
+				playlist.add(track)
+				if store['beyond_last_song'] === 'true'
+					until SpotifyController.is_current_song?(track)
+						SpotifyController.skip
+					end
+					SpotifyController.resume
+				else
+					SpotifyController.play(playlist.uri)
 				end
-				SpotifyController.resume
+				reply "Playing #{track.message}"
 			else
-				SpotifyController.play(playlist.uri)
+				playlist.add(track)
+				reply "Queuing #{track.message}"
 			end
-			reply "Playing #{track.message}"
-		else
-			playlist.add(track)
-			reply "Queuing #{track.message}"
+
+			if playlist.is_last_song?(track)
+				store['beyond_last_song'] = 'true'
+			else
+				store['beyond_last_song'] = 'false'
+			end
+		rescue NoMethodError
+			reply "Falling back to YouTube. Be patient, child."
 		end
 
-		if playlist.is_last_song?(track)
-			store['beyond_last_song'] = 'true'
-		else
-			store['beyond_last_song'] = 'false'
-		end
+	end
 
+	match /^!yt(.*)/ do |query|
+		reply "Looking through YouTube..."
+		Fallback.play query
 	end
 
 	desc "!pause(s) the current tune"
