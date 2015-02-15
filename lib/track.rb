@@ -21,4 +21,8 @@ class Track
 		"'#{name}' by #{artist} from the album '#{album}'"
 	end
 
+	def available_in_uk?
+		@item['available_markets'].include? 'GB'
+	end
+
 end

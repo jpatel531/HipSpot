@@ -20,11 +20,15 @@ class Robut::Plugin::HipSpot
 		player_state = SpotifyController.player_state
 
 		return reply "No playlist found. Type !new to create a new playlist" unless store['current_playlist']
+		return reply "Pack your bags and leave the UK, son. For that's the only way I'll play you this shit." unless track.available_in_uk?
+
 
 		playlist = Playlist.from_store(store)
 
 		begin
 			track = Track.from_name(query)
+
+			# return reply ""
 
 			if player_state != 'playing'
 				playlist.add(track)
