@@ -7,6 +7,13 @@ class Track
 			track_data = client.search("track", name).first[1]["items"].first
 			new track_data
 		end
+
+		def from_uri(uri)
+			id = uri.split(":")[2]
+			track_data = client.track(id)
+			new track_data
+		end
+
 	end
 
 	attr_reader :id

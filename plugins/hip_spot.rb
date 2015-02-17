@@ -17,44 +17,41 @@ class Robut::Plugin::HipSpot
 	desc "!play <query> plays the desired Spotify tune. If a tune is already playing, it will queue in the playlist. Make sure you have started a !new playlist."
 	
 	match /^!play (.*)/ do |query|
+		handle_play_request query
+	end
+
+	def handle_play_request(query, from_uri = false)
 		player_state = SpotifyController.player_state
-
-		return reply "No playlist found. Type !new to create a new playlist" unless store['current_playlist']
-		return reply "Pack your bags and leave the UK, son. For that's the only way I'll play you this shit." unless track.available_in_uk?
-
 
 		playlist = Playlist.from_store(store)
 
-		begin
-			track = Track.from_name(query)
+		return reply "No playlist found. Type !new to create a new playlist" unless store['current_playlist']
 
-			# return reply ""
+		track = (from_uri) ? Track.from_uri(query) : Track.from_name(query)
 
-			if player_state != 'playing'
-				playlist.add(track)
-				if store['beyond_last_song'] === 'true'
-					until SpotifyController.is_current_song?(track)
-						SpotifyController.skip
-					end
-					SpotifyController.resume
-				else
-					SpotifyController.play(playlist.uri)
+		return reply "Pack your bags and leave the UK, son. For that's the only way I'll play you this shit." unless track.available_in_uk?
+
+		if player_state != 'playing'
+			playlist.add(track)
+			if store['beyond_last_song'] === true # the playlist has already finished and you wanna continue it with this track
+				until SpotifyController.is_current_song?(track) 
+					SpotifyController.skip #it will start from the beginning, skip until the next track
 				end
-				reply "Playing #{track.message}"
+				SpotifyController.resume 
 			else
-				playlist.add(track)
-				reply "Queuing #{track.message}"
+				SpotifyController.play(playlist.uri) #otherwise, play
 			end
-
-			if playlist.is_last_song?(track)
-				store['beyond_last_song'] = 'true'
-			else
-				store['beyond_last_song'] = 'false'
-			end
-		rescue NoMethodError
-			reply "Falling back to YouTube. Be patient, child."
+			reply "Playing #{track.message}"
+		else 
+			playlist.add(track) #the playlist is playing and it will just add the track on
+			reply "Queuing #{track.message}"
 		end
 
+		if playlist.is_last_song?(track)
+			store['beyond_last_song'] = true
+		else
+			store['beyond_last_song'] = false
+		end
 	end
 
 	match /^!yt(.*)/ do |query|
@@ -99,6 +96,11 @@ class Robut::Plugin::HipSpot
 
 	match /!volume?/ do
 		reply "The volume is at #{SpotifyController.volume}%"
+	end
+
+	match /^this one goes out to (.*)/ do |recipient|
+		track = store[recipient].sample
+		handle_play_request track, true
 	end
 
 end

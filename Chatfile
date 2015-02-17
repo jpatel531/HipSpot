@@ -4,6 +4,7 @@ require 'robut/storage/yaml_store'
 
 
 require './plugins/hip_spot'
+require './plugins/likes'
 
 require 'yaml'
 require 'erb'
@@ -15,7 +16,7 @@ user_vars = YAML.load(ERB.new(File.read('./config.yml')).result)
 
 
 
-Robut::Plugin.plugins << Robut::Plugin::HipSpot
+Robut::Plugin.plugins << Robut::Plugin::HipSpot << Robut::Plugin::Likes
 
 # Configure the robut jabber connection and you're good to go!
 Robut::Connection.configure do |config|
