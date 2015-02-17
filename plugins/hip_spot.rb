@@ -103,4 +103,15 @@ class Robut::Plugin::HipSpot
 		handle_play_request track, true
 	end
 
+	match /!random/ do 
+		reply "Playing something from the archive..."
+		choice = store['archive'].sample
+		handle_play_request choice, true
+	end
+
+	match /!update-archive/ do
+		reply "Updating the archive..."
+		store['archive'] = Archive.fetch
+	end
+
 end
