@@ -29,11 +29,11 @@ class Robut::Plugin::HipSpot
 
 		track = (from_uri) ? Track.from_uri(query) : Track.from_name(query)
 
-		return reply "Pack your bags and leave the UK, son. For that's the only way I'll play you this shit." unless track.available_in_uk?
+		# return reply "Pack your bags and leave the UK, son. For that's the only way I'll play you this shit." unless track.available_in_uk?
 
 		if player_state != 'playing'
 			playlist.add(track)
-			if store['beyond_last_song'] === true # the playlist has already finished and you wanna continue it with this track
+			if player_state == 'stopped' # the playlist has already finished and you wanna continue it with this track
 				until SpotifyController.is_current_song?(track) 
 					SpotifyController.skip #it will start from the beginning, skip until the next track
 				end
@@ -45,12 +45,6 @@ class Robut::Plugin::HipSpot
 		else 
 			playlist.add(track) #the playlist is playing and it will just add the track on
 			reply "Queuing #{track.message}"
-		end
-
-		if playlist.is_last_song?(track)
-			store['beyond_last_song'] = true
-		else
-			store['beyond_last_song'] = false
 		end
 	end
 

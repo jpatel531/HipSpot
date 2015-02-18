@@ -24,7 +24,11 @@ class SpotifyController
 		end
 
 		def is_current_song?(track)
-			`osascript -e 'tell application "Spotify" to id of current track'`.chomp == track.id
+			current_song == track.id
+		end
+
+		def current_song
+			`osascript -e 'tell application "Spotify" to id of current track'`.chomp
 		end
 
 		def player_state

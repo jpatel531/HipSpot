@@ -10,7 +10,10 @@ class Track
 
 		def from_uri(uri)
 			id = uri.split(":")[2]
-			track_data = client.track(id)
+			puts uri
+			puts id
+			track_data = client.track(id) 
+			puts track_data
 			new track_data
 		end
 
