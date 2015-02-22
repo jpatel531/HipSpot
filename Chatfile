@@ -5,6 +5,8 @@ require 'robut/storage/yaml_store'
 
 require './plugins/hip_spot'
 require './plugins/likes'
+require './lib/end_checker'
+
 
 require 'yaml'
 require 'erb'

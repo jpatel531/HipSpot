@@ -1,0 +1,9 @@
+---
+jid: 71080_1606440@chat.hipchat.com/bot
+password: <%= ENV['PUSHER_BOT_PASSWORD'] %>
+nick: Spotify Bot (owned by @jamie)
+room: 71080_music@conf.hipchat.com
+mention_name: spot
+spotify_id: jpatel1
+spotify_refresh_token: <%= ENV['SPOTIFY_REFRESH_TOKEN'] %>
+spotify_auth_hash: <%= ENV['SPOTIFY_HASH'] %>

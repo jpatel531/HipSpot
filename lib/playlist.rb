@@ -50,6 +50,11 @@ class Playlist
 		data["tracks"]["items"].last["track"]["uri"]
 	end
 
+	def first_song
+		data["tracks"]["items"].first["track"]["uri"]
+	end
+
+
 	def remove_song(index)
 		refresh
 		to_remove = data["tracks"]["items"][0 - index]["track"]["uri"]
@@ -57,7 +62,7 @@ class Playlist
 	end
 
 	def add(track)
-		client.add_user_tracks_to_playlist SPOTIFY_USER, id, [track.id]
+		puts client.add_user_tracks_to_playlist SPOTIFY_USER, id, [track.id]
 	end
 
 	def is_last_song?(track)

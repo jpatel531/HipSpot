@@ -11,7 +11,6 @@ class Robut::Plugin::HipSpot
 	match /!new/ do
 		Playlist.create(store)
 		reply "Creating new playlist"
-		store['beyond_last_song'] = false
 	end
 
 	desc "!play <query> plays the desired Spotify tune. If a tune is already playing, it will queue in the playlist. Make sure you have started a !new playlist."
@@ -33,12 +32,16 @@ class Robut::Plugin::HipSpot
 
 		if player_state != 'playing'
 			playlist.add(track)
-			if player_state == 'stopped' # the playlist has already finished and you wanna continue it with this track
+
+
+			if store['beyond_last_song'] # the playlist has already finished and you wanna continue it with this track
+				reply "beyond_last_song"
 				until SpotifyController.is_current_song?(track) 
 					SpotifyController.skip #it will start from the beginning, skip until the next track
 				end
 				SpotifyController.resume 
 			else
+				reply "not beyond last song"
 				SpotifyController.play(playlist.uri) #otherwise, play
 			end
 			reply "Playing #{track.message}"
@@ -63,6 +66,10 @@ class Robut::Plugin::HipSpot
 	
 	match /!resume/ do
 		SpotifyController.resume
+	end
+
+	match /^!skip/ do 
+		SpotifyController.skip
 	end
 
 	desc "!remove(s) an unwanted song"
