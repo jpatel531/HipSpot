@@ -1,9 +1,0 @@
----
-jid: 193263_1376488@chat.hipchat.com/bot
-password: <%= ENV['BOT_PASSWORD'] %>
-nick: Spoti Bot
-room: 193263_testing@conf.hipchat.com
-mention_name: spot
-spotify_id: jpatel1
-spotify_refresh_token: <%= ENV['SPOTIFY_REFRESH_TOKEN'] %>
-spotify_auth_hash: <%= ENV['SPOTIFY_HASH'] %>
